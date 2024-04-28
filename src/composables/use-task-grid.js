@@ -5,9 +5,7 @@ const tasks = ref([]);
 
 async function fetchTasks() {
   try {
-    const response = await api.get("tasks", {
-      withCredentials: true,
-    });
+    const response = await api.get("tasks");
     tasks.value = response.data.map((task) => ({
       ...task,
       timesRecord: task.registered_times || [],

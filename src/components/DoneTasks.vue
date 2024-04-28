@@ -42,7 +42,7 @@ const fetchDoneTasks = async () => {
   try {
     doneTasksLoading.value = true;
     const response = await api.get("tasks/done-tasks");
-    const data = await response.json();
+    const data = await response.data;
 
     doneTasks.value = data;
   } catch (error) {

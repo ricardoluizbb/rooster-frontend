@@ -20,13 +20,13 @@
           style="width: 100%"
           dense
           color="primary"
-          label="Enviar"
+          label="Criar conta"
           @click="submit(email)"
         />
       </q-card-section>
       <q-card-section class="text-center">
         <span class="text-caption"
-          >Digite seu e-mail para receber um token de acesso ao Rooster.</span
+          >Digite seu e-mail para criar uma conta!</span
         >
       </q-card-section>
     </q-card>
@@ -38,7 +38,7 @@ import { ref } from "vue";
 import { useQuasar } from "quasar";
 import { useLogin } from "../composables/use-login";
 
-const { sendLoginForm } = useLogin();
+const { createAccountForm } = useLogin();
 
 const email = ref("");
 const sendButtonLoading = ref(false);
@@ -46,7 +46,7 @@ const $q = useQuasar;
 
 async function submit() {
   sendButtonLoading.value = true;
-  await sendLoginForm(email);
+  await createAccountForm(email);
   sendButtonLoading.value = false;
 }
 </script>
