@@ -1,6 +1,6 @@
 import { ref } from "vue";
-import axios from "axios";
 import { useTaskGrid } from "../composables/use-task-grid";
+import { api } from "../boot/axios";
 
 export function useCreateTask() {
   const newTaskTitle = ref("");
@@ -10,7 +10,7 @@ export function useCreateTask() {
   const createTask = async () => {
     try {
       createLoading.value = true;
-      await axios.post("http://localhost:8081/tasks", {
+      await api.post("tasks", {
         title: newTaskTitle.value,
       });
       newTaskTitle.value = "";

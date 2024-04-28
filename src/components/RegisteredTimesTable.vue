@@ -4,19 +4,38 @@
       <p class="text-center text-h6 text-weight-regular">Tempos Registrados</p>
       <q-list v-if="!gridLoading">
         <div v-if="task.timesRecord.length">
-          <div v-for="timeRecord in task.timesRecord" :key="timeRecord.id"
-            :class="{ 'q-pb-sm': editingId === timeRecord.id }">
+          <div
+            v-for="timeRecord in task.timesRecord"
+            :key="timeRecord.id"
+            :class="{ 'q-pb-sm': editingId === timeRecord.id }"
+          >
             <!-- Modo de edição -->
             <div class="row align-center">
               <template v-if="editingId === timeRecord.id">
                 <div class="row">
-                  <q-input v-model="editedTimeRecord.start_time" dense outlined label="Início" :mask="dateMask" />
-                  <q-input v-model="editedTimeRecord.end_time" dense outlined label="Fim" :mask="dateMask" />
+                  <q-input
+                    v-model="editedTimeRecord.start_time"
+                    dense
+                    outlined
+                    label="Início"
+                    :mask="dateMask"
+                  />
+                  <q-input
+                    v-model="editedTimeRecord.end_time"
+                    dense
+                    outlined
+                    label="Fim"
+                    :mask="dateMask"
+                  />
                 </div>
               </template>
               <template v-else>
-                <q-card class="times-info row justify-between" :style="{ width: cardWidth }"
-                  @click="toggleEditingMode(timeRecord.id)" flat>
+                <q-card
+                  class="times-info row justify-between"
+                  :style="{ width: cardWidth }"
+                  @click="toggleEditingMode(timeRecord.id)"
+                  flat
+                >
                   <span class="text-caption">
                     {{ formatarData(timeRecord.start_time) }}
                   </span>
@@ -28,9 +47,19 @@
               </template>
 
               <!-- Adiciona botão de editar/salvar -->
-              <q-btn v-if="editingId === timeRecord.id" icon="done" size="10px" flat color="grey-7"
-                @click="updateRegisteredTime(timeRecord.id)" :loading="checkLoading" :disable="!isInputValid">
-                <q-tooltip v-if="!isInputValid">Preencha neste formato: 01/01/2001 12:00:00</q-tooltip>
+              <q-btn
+                v-if="editingId === timeRecord.id"
+                icon="done"
+                size="10px"
+                flat
+                color="grey-7"
+                @click="updateRegisteredTime(timeRecord.id)"
+                :loading="checkLoading"
+                :disable="!isInputValid"
+              >
+                <q-tooltip v-if="!isInputValid"
+                  >Preencha neste formato: 01/01/2001 12:00:00</q-tooltip
+                >
               </q-btn>
             </div>
           </div>
@@ -49,10 +78,10 @@
 </template>
 
 <script setup>
-import axios from "axios";
 import { ref, defineProps, defineEmits, computed, onMounted } from "vue";
 import { useTaskCard } from "../composables/use-task-card";
 import { useTaskGrid } from "../composables/use-task-grid";
+import { api } from "../boot/axios";
 
 const props = defineProps(["task", "gridLoading"]);
 const emit = defineEmits(["timeUpdated"]);
@@ -102,10 +131,9 @@ const toggleEditingMode = (id) => {
 };
 
 const updateRegisteredTime = async (id) => {
-  const url = `http://localhost:8081/tasks/${props.task.id}/registered-times/${id}`;
   try {
     checkLoading.value = true;
-    const response = await axios.put(url, {
+    await api.put(`tasks/${props.task.id}/registered-times/${id}`, {
       startTime: transformToISOFormat(editedTimeRecord.value.start_time),
       endTime: transformToISOFormat(editedTimeRecord.value.end_time),
     });

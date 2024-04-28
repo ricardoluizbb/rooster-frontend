@@ -13,7 +13,13 @@
           </q-tabs>
         </div>
         <div>
-          <q-btn @click="generateReport" class="q-mr-lg" dense flat icon="file_download">
+          <q-btn
+            @click="generateReport"
+            class="q-mr-lg"
+            dense
+            flat
+            icon="file_download"
+          >
           </q-btn>
         </div>
       </q-toolbar>
@@ -26,16 +32,15 @@
 </template>
 
 <script setup>
-import axios from "axios";
+import { api } from "../boot/axios";
 import { ref } from "vue";
 const selectedTab = ref("MyTasks"); // Definindo a aba inicial
 
 const generateReport = async () => {
   try {
-    const response = await axios.get(
-      "http://localhost:8081/tasks/export-to-excel",
-      { responseType: "blob" }
-    );
+    const response = await api.get("tasks/export-to-excel", {
+      responseType: "blob",
+    });
 
     // Criar um URL temporário para o blob e criar um link de download
     const url = window.URL.createObjectURL(new Blob([response.data]));

@@ -8,7 +8,12 @@
     </div>
 
     <div class="grid-container" v-else-if="doneTasksLoading">
-      <q-skeleton v-for="index in 8" :key="index" class="q-mb-sm" height="40px" />
+      <q-skeleton
+        v-for="index in 8"
+        :key="index"
+        class="q-mb-sm"
+        height="40px"
+      />
     </div>
 
     <div v-else>
@@ -28,6 +33,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { api } from "../boot/axios";
 
 const doneTasks = ref([]);
 const doneTasksLoading = ref(false);
@@ -35,7 +41,7 @@ const doneTasksLoading = ref(false);
 const fetchDoneTasks = async () => {
   try {
     doneTasksLoading.value = true;
-    const response = await fetch("http://localhost:8081/tasks/done-tasks");
+    const response = await api.get("tasks/done-tasks");
     const data = await response.json();
 
     doneTasks.value = data;

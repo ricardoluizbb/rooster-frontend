@@ -1,12 +1,12 @@
 import { ref } from "vue";
-import axios from "axios";
+import { api } from "../boot/axios";
 
 const tasks = ref([]);
 
 async function fetchTasks() {
   try {
-    const response = await axios.get("http://localhost:8081/tasks", {
-      withCredentials: true
+    const response = await api.get("tasks", {
+      withCredentials: true,
     });
     tasks.value = response.data.map((task) => ({
       ...task,

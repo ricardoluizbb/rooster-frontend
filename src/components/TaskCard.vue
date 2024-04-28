@@ -4,7 +4,11 @@
       <!-- Closed Expansion item -->
       <template v-slot:header>
         <div style="width: 100%" class="row justify-between">
-          <div style="min-width: 200px" v-if="!isEditing" class="flex column task-title">
+          <div
+            style="min-width: 200px"
+            v-if="!isEditing"
+            class="flex column task-title"
+          >
             <q-skeleton v-if="editTitleLoading" class="q-mb-sm" width="350px" />
             <span v-else @click.stop="startEditing">{{ task.title }}</span>
             <span class="text-grey-7">
@@ -12,44 +16,101 @@
             </span>
           </div>
           <div v-else>
-            <q-input autofocus v-model="editedTitle" dense style="width: 500px" outlined @click.stop
-              @keypress.enter="stopEditing(task.id)" @blur="cancelEditing(task.id)" />
+            <q-input
+              autofocus
+              v-model="editedTitle"
+              dense
+              style="width: 500px"
+              outlined
+              @click.stop
+              @keypress.enter="stopEditing(task.id)"
+              @blur="cancelEditing(task.id)"
+            />
           </div>
           <div v-if="!isEditing" class="column text-caption text-center">
             <span>Cronômetro</span>
             <q-chip dense class="text-grey-7">{{ formattedTime }}</q-chip>
           </div>
           <div class="row">
-            <q-btn v-if="disableStartBtn" class="q-pr-sm" flat dense icon="stop_circle" label="Parar" color="primary"
-              :loading="pauseLoading" @click.stop="pauseTask(task.id)" />
-            <q-btn v-else class="q-pr-sm" flat dense icon="play_circle" label="Iniciar" color="primary"
-              :loading="startLoading" @click.stop="startTask(task.id)" />
-            <q-btn flat dense icon="check_circle" label="Concluir" color="positive" :disable="disableStartBtn"
-              @click.stop="showDoneTaskDialog = true" />
-            <q-btn flat dense icon="delete" label="Excluir" color="negative" :disable="disableStartBtn"
-              @click.stop="showDeleteDialog = true" />
+            <q-btn
+              v-if="disableStartBtn"
+              class="q-pr-sm"
+              flat
+              dense
+              icon="stop_circle"
+              label="Parar"
+              color="primary"
+              :loading="pauseLoading"
+              @click.stop="pauseTask(task.id)"
+            />
+            <q-btn
+              v-else
+              class="q-pr-sm"
+              flat
+              dense
+              icon="play_circle"
+              label="Iniciar"
+              color="primary"
+              :loading="startLoading"
+              @click.stop="startTask(task.id)"
+            />
+            <q-btn
+              flat
+              dense
+              icon="check_circle"
+              label="Concluir"
+              color="positive"
+              :disable="disableStartBtn"
+              @click.stop="showDoneTaskDialog = true"
+            />
+            <q-btn
+              flat
+              dense
+              icon="delete"
+              label="Excluir"
+              color="negative"
+              :disable="disableStartBtn"
+              @click.stop="showDeleteDialog = true"
+            />
           </div>
         </div>
       </template>
 
       <!-- Opened expansion item -->
       <q-card bordered class="row justify-between task-card">
-        <RegisteredTimesTable @timeUpdated="updateTotalTime(taskID)" :task="task" :gridLoading="gridLoading" />
+        <RegisteredTimesTable
+          @timeUpdated="updateTotalTime(taskID)"
+          :task="task"
+          :gridLoading="gridLoading"
+        />
         <CreateObservation :task="task" class="q-mb-md" />
       </q-card>
 
       <!-- Delete task dialog -->
-      <ConfirmationDialog :confirmationDialogLoading="deleteTaskLoading" :showDialog="showDeleteDialog"
-        :actionLabel="'Excluir'" :actionLabelColor="'negative'" :title="'Excluir'"
-        :subtitle="'Tem certeza que quer excluir essa tarefa?'" @update:showDialog="(value) => (showDeleteDialog = value)"
-        @cancelAction="showDeleteDialog = false" @confirmAction="deleteTask(task.id)" />
+      <ConfirmationDialog
+        :confirmationDialogLoading="deleteTaskLoading"
+        :showDialog="showDeleteDialog"
+        :actionLabel="'Excluir'"
+        :actionLabelColor="'negative'"
+        :title="'Excluir'"
+        :subtitle="'Tem certeza que quer excluir essa tarefa?'"
+        @update:showDialog="(value) => (showDeleteDialog = value)"
+        @cancelAction="showDeleteDialog = false"
+        @confirmAction="deleteTask(task.id)"
+      />
 
       <!-- Conclude task dialog -->
-      <ConfirmationDialog :confirmationDialogLoading="doneTaskLoading" :showDialog="showDoneTaskDialog"
-        :actionLabel="'Concluir'" :actionLabelColor="'positive'" :title="'Concluir'"
+      <ConfirmationDialog
+        :confirmationDialogLoading="doneTaskLoading"
+        :showDialog="showDoneTaskDialog"
+        :actionLabel="'Concluir'"
+        :actionLabelColor="'positive'"
+        :title="'Concluir'"
         :subtitle="'Tem certeza que quer concluir essa tarefa?'"
-        @update:showDialog="(value) => (showDoneTaskDialog = value)" @cancelAction="showDoneTaskDialog = false"
-        @confirmAction="completeTask(task.id)" />
+        @update:showDialog="(value) => (showDoneTaskDialog = value)"
+        @cancelAction="showDoneTaskDialog = false"
+        @confirmAction="completeTask(task.id)"
+      />
     </q-expansion-item>
   </div>
 </template>
@@ -62,6 +123,7 @@ import { useTaskCard } from "../composables/use-task-card";
 import { useTaskGrid } from "../composables/use-task-grid";
 import RegisteredTimesTable from "../components/RegisteredTimesTable.vue";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
+import { api } from "../boot/axios";
 
 const deleteTaskLoading = ref(false);
 const doneTaskLoading = ref(false);
@@ -101,7 +163,7 @@ async function updateTotalTime(taskID) {
 const deleteTask = async (taskID) => {
   try {
     deleteTaskLoading.value = true;
-    await axios.delete(`http://localhost:8081/tasks/${taskID}`);
+    await api.delete(`tasks/${taskID}`);
     await fetchTasks();
     deleteTaskLoading.value = false;
     showDeleteDialog.value = false;
@@ -113,9 +175,7 @@ const deleteTask = async (taskID) => {
 const completeTask = async (taskID) => {
   doneTaskLoading.value = true;
   try {
-    const response = await axios.put(
-      `http://localhost:8081/tasks/${taskID}/complete`
-    );
+    await api.put(`tasks/${taskID}/complete`);
     await fetchTasks();
   } catch (error) {
     console.error("Erro ao concluir a tarefa:", error);
@@ -141,7 +201,7 @@ const cancelEditing = () => {
 const updateTaskTitle = async (taskID, newTitle) => {
   editTitleLoading.value = true;
   try {
-    await axios.put(`http://localhost:8081/tasks/${taskID}`, {
+    await api.put(`tasks/${taskID}`, {
       Title: newTitle.value,
     });
     await fetchTasks();

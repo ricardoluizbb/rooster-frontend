@@ -2,6 +2,7 @@ import { ref, onBeforeUnmount, onMounted } from "vue";
 import axios from "axios";
 import { useTaskGrid } from "../composables/use-task-grid";
 import { useQuasar } from "quasar";
+import { api } from "../boot/axios";
 
 export function useTaskCard(task) {
   const { tasks, fetchTasks } = useTaskGrid();
@@ -27,7 +28,7 @@ export function useTaskCard(task) {
     try {
       startLoading.value = true;
       disableStartBtn.value = true;
-      await axios.post(`http://localhost:8081/tasks/${taskID}/start`);
+      await api.post(`tasks/${taskID}/start`);
       startTimer();
       startLoading.value = false;
     } catch (error) {
@@ -55,9 +56,7 @@ export function useTaskCard(task) {
 
     try {
       pauseLoading.value = true;
-      const response = await axios.post(
-        `http://localhost:8081/tasks/${taskID}/pause`
-      );
+      const response = await api.post(`tasks/${taskID}/pause`);
       timesRecord.value = response.data.time_record;
       clearInterval(timerInterval);
       formattedTime.value = timesRecord.value
@@ -80,9 +79,7 @@ export function useTaskCard(task) {
 
   async function getTotalTime(taskID) {
     try {
-      const response = await axios.get(
-        `http://localhost:8081/tasks/${taskID}/total-time`
-      );
+      const response = await api.get(`tasks/${taskID}/total-time`);
       totalInMilliseconds.value = response.data.total_time;
     } catch (error) {
       console.error("Error fetching total time:", error);
