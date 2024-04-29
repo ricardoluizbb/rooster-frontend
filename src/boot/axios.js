@@ -13,8 +13,7 @@ api.interceptors.response.use(
   },
   function (error) {
     if (error.response.status === 401) {
-      console.log(error);
-      router.push({ path: "/login" });
+      router.push("/login");
     }
     return Promise.reject(error);
   }
