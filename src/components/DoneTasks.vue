@@ -1,33 +1,19 @@
 <template>
-  <div>
-    <p class="text-h6 text-center">Tarefas concluídas</p>
-
-    <div v-if="!doneTasks.length && !doneTasksLoading" class="text-caption">
-      <p class="message text-grey-7">Não há tarefas concluídas</p>
-      <q-list class="grid-container" />
-    </div>
-
-    <div class="grid-container" v-else-if="doneTasksLoading">
-      <q-skeleton
-        v-for="index in 8"
-        :key="index"
-        class="q-mb-sm"
-        height="40px"
-      />
-    </div>
-
-    <div v-else>
-      <q-list bordered separator class="grid-container">
-        <q-item v-for="task in doneTasks" :key="task.id">
-          <q-item-section class="task-title">
-            <q-item-label class="q-text-wrap">{{ task.title }}</q-item-label>
-          </q-item-section>
-          <q-item-section side top>
-            <q-icon name="check_circle" color="positive" />
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </div>
+  <p class="text-h6 text-center">Tarefas concluídas</p>
+  <div class="grid-container" v-if="doneTasksLoading">
+    <q-skeleton v-for="index in 8" :key="index" class="q-mb-sm" height="40px" />
+  </div>
+  <div v-else>
+    <q-list bordered separator class="grid-container">
+      <q-item v-for="task in doneTasks" :key="task.id">
+        <q-item-section class="task-title">
+          <q-item-label class="q-text-wrap">{{ task.title }}</q-item-label>
+        </q-item-section>
+        <q-item-section side top>
+          <q-icon name="check_circle" color="positive" />
+        </q-item-section>
+      </q-item>
+    </q-list>
   </div>
 </template>
 

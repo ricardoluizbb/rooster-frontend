@@ -1,10 +1,6 @@
 <template>
   <div>
-    <div class="text-center" v-if="!tasks.length">
-      <p class="text-grey-7 text-caption">Não há tarefas listadas</p>
-      <div class="grid-container"></div>
-    </div>
-    <div v-else class="grid-container q-mb-md">
+    <div class="grid-container q-mb-md">
       <q-list>
         <TaskCard v-for="task in tasks" :key="task.id" :task="task" />
       </q-list>
@@ -27,9 +23,9 @@ onMounted(async () => {
 <style scoped>
 .grid-container {
   width: 100%;
-  max-width: 950px;
+  max-width: 1200px;
   margin: 0 auto;
-  height: 400px;
+  height: 350px;
   overflow: auto;
   border: 1px solid #eff0f2;
   border-radius: 10px;

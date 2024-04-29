@@ -47,12 +47,9 @@ import router from "../router/index";
 const { createAccountForm } = useLogin();
 
 const email = ref("");
-const sendButtonLoading = ref(false);
 
 async function submit() {
-  sendButtonLoading.value = true;
   await createAccountForm(email);
-  sendButtonLoading.value = false;
 }
 </script>
 

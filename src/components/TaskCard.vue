@@ -28,12 +28,13 @@
             />
           </div>
           <div v-if="!isEditing" class="column text-caption text-center">
-            <span>Cronômetro</span>
+            <span class="text-caption">Cronômetro</span>
             <q-chip dense class="text-grey-7">{{ formattedTime }}</q-chip>
           </div>
           <div class="row">
             <q-btn
               v-if="disableStartBtn"
+              no-caps
               class="q-pr-sm"
               flat
               dense
@@ -45,6 +46,7 @@
             />
             <q-btn
               v-else
+              no-caps
               class="q-pr-sm"
               flat
               dense
@@ -55,6 +57,7 @@
               @click.stop="startTask(task.id)"
             />
             <q-btn
+              no-caps
               flat
               dense
               icon="check_circle"
@@ -64,6 +67,7 @@
               @click.stop="showDoneTaskDialog = true"
             />
             <q-btn
+              no-caps
               flat
               dense
               icon="delete"
@@ -256,7 +260,7 @@ const saveTaskTime = () => {
 }
 
 .task-title {
-  width: 300px;
+  width: 450px;
   word-break: break-all;
 }
 </style>

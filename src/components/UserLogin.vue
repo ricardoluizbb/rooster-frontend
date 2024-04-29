@@ -56,11 +56,9 @@ const email = ref("");
 const sendButtonLoading = ref(false);
 const $q = useQuasar;
 
-async function submit() {
-  sendButtonLoading.value = true;
+const submit = async () => {
   await sendLoginForm(email);
-  sendButtonLoading.value = false;
-}
+};
 </script>
 
 <style scoped>

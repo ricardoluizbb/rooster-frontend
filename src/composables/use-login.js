@@ -1,11 +1,14 @@
 import { api } from "../boot/axios";
 import { useQuasar } from "quasar";
 import router from "../router/index";
+import { ref } from "vue";
 
 export function useLogin() {
   const $q = useQuasar();
+  const sendButtonLoading = ref(false);
 
   const sendLoginForm = async (email) => {
+    sendButtonLoading.value = true;
     try {
       const response = await api.post("login", {
         email: email.value,
@@ -17,12 +20,15 @@ export function useLogin() {
         message: "O e-mail digitado não é cadastrado",
         color: "negative",
         actions: [{ label: "Fechar", color: "white" }],
-        icon: "error_outline",
+        icon: "error",
       });
+    } finally {
+      sendButtonLoading.value = false;
     }
   };
 
   const createAccountForm = async (email) => {
+    sendButtonLoading.value = true;
     try {
       await api.post("create-user", {
         email: email.value,
@@ -31,7 +37,7 @@ export function useLogin() {
         message: "Seu token foi gerado com sucesso!",
         color: "positive",
         actions: [{ label: "Fechar", color: "white" }],
-        icon: "error_outline",
+        icon: "check",
       });
       router.push("/login");
       email.value = "";
@@ -42,6 +48,8 @@ export function useLogin() {
         actions: [{ label: "Fechar", color: "white" }],
         icon: "error_outline",
       });
+    } finally {
+      sendButtonLoading.value = false;
     }
   };
 
