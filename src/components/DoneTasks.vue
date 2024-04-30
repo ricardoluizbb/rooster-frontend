@@ -18,25 +18,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { api } from "../boot/axios";
+import { onMounted } from "vue";
+import { useDoneTaskGrid } from "../composables/use-done-tasks-grid";
 
-const doneTasks = ref([]);
-const doneTasksLoading = ref(false);
-
-const fetchDoneTasks = async () => {
-  try {
-    doneTasksLoading.value = true;
-    const response = await api.get("tasks/done-tasks");
-    const data = await response.data;
-
-    doneTasks.value = data;
-  } catch (error) {
-    console.error("Erro ao obter tarefas concluídas", error);
-  } finally {
-    doneTasksLoading.value = false;
-  }
-};
+const { doneTasksLoading, doneTasks, fetchDoneTasks } = useDoneTaskGrid();
 
 onMounted(() => {
   fetchDoneTasks();
@@ -46,7 +31,7 @@ onMounted(() => {
 <style scoped>
 .grid-container {
   max-width: 500px;
-  height: 400px;
+  height: 700px;
   margin: 0 auto;
   overflow: auto;
   border: 1px solid #eff0f2;
