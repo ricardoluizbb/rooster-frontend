@@ -1,39 +1,47 @@
 <template>
-  <q-page class="page-container flex flex-center">
-    <q-card style="width: 400px; height: 300px">
-      <q-card-section class="text-center">
-        <q-img
-          src="../assets/rooster1.svg"
-          style="height: 67px; max-width: 282px"
-        ></q-img>
+  <q-page class="bg-primary flex flex-center">
+    <q-card class="form-card flex">
+      <q-card-section class="half-width q-pa-none">
+        <q-img class="full-height" src="../assets/clock.jpg"></q-img>
       </q-card-section>
-      <q-card-section>
-        <q-input
-          class="q-mb-md"
-          dense
-          v-model="email"
-          label="E-mail"
-          outlined
-        />
-        <q-btn
-          :disable="!email"
-          :loading="sendButtonLoading"
-          style="width: 100%"
-          dense
-          color="primary"
-          label="Criar conta"
-          @click="submit(email)"
-        />
-      </q-card-section>
-      <q-card-section class="text-center q-py-none">
-        <span class="text-caption"
-          >Digite seu e-mail para criar uma conta!</span
-        >
-      </q-card-section>
-      <q-card-section class="text-center">
-        <q-btn @click="router.push('/login')" dense flat color="primary"
-          >Já possui uma conta?</q-btn
-        >
+      <q-card-section class="half-width self-center">
+        <q-card-section class="text-center">
+          <q-img
+            src="../assets/rooster1.svg"
+            style="height: 67px; max-width: 282px"
+          ></q-img>
+        </q-card-section>
+        <q-card-section>
+          <q-input
+            rounded
+            dense
+            type="email"
+            class="q-mb-md"
+            v-model="email"
+            label="E-mail"
+            outlined
+          />
+          <q-btn
+            rounded
+            dense
+            :disabled="!email"
+            :loading="sendButtonLoading"
+            class="full-width"
+            color="primary"
+            label="Criar conta"
+            @click="submit(email)"
+          />
+        </q-card-section>
+        <q-card-section class="text-center">
+          <q-btn
+            @click="router.push('/login')"
+            dense
+            flat
+            color="primary"
+            no-caps=""
+            >Já possui uma conta?</q-btn
+          >
+        </q-card-section>
       </q-card-section>
     </q-card>
   </q-page>
@@ -54,7 +62,12 @@ async function submit() {
 </script>
 
 <style scoped>
-.page-container {
-  background-color: #3c59ac;
+.form-card {
+  width: 720px;
+  height: 530px;
+}
+
+.half-width {
+  flex: 1;
 }
 </style>
