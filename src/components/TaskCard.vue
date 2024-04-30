@@ -121,72 +121,36 @@
 
 <script setup>
 import { defineProps, defineEmits, ref, onMounted, onBeforeUnmount } from "vue";
-import axios from "axios";
 import CreateObservation from "../components/CreateObservation.vue";
 import { useTaskCard } from "../composables/use-task-card";
-import { useTaskGrid } from "../composables/use-task-grid";
 import RegisteredTimesTable from "../components/RegisteredTimesTable.vue";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
-import { api } from "../boot/axios";
-
-const deleteTaskLoading = ref(false);
-const doneTaskLoading = ref(false);
-const gridLoading = ref(false);
-const editTitleLoading = ref(false);
 
 const isEditing = ref(false);
 const editedTitle = ref("");
-const showDeleteDialog = ref(false);
-const showDoneTaskDialog = ref(false);
 
 const props = defineProps(["task"]);
 const emit = defineEmits(["taskDeleted"]);
 
 const {
   formattedTime,
-  startTask,
-  pauseTask,
-  cancelDeleteTask,
-  isValidDate,
   totalInMilliseconds,
-  getTotalTime,
   startLoading,
   pauseLoading,
   disableStartBtn,
+  deleteTaskLoading,
+  showDeleteDialog,
+  showDoneTaskDialog,
+  doneTaskLoading,
+  gridLoading,
+  editTitleLoading,
+  startTask,
+  pauseTask,
+  updateTotalTime,
+  deleteTask,
+  completeTask,
+  updateTaskTitle,
 } = useTaskCard(props.task);
-
-const { fetchTasks } = useTaskGrid();
-
-async function updateTotalTime(taskID) {
-  gridLoading.value = true;
-  await getTotalTime(props.task.id);
-  await fetchTasks();
-  gridLoading.value = false;
-}
-
-const deleteTask = async (taskID) => {
-  try {
-    deleteTaskLoading.value = true;
-    await api.delete(`tasks/${taskID}`);
-    await fetchTasks();
-    deleteTaskLoading.value = false;
-    showDeleteDialog.value = false;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const completeTask = async (taskID) => {
-  doneTaskLoading.value = true;
-  try {
-    await api.put(`tasks/${taskID}/complete`);
-    await fetchTasks();
-  } catch (error) {
-    console.error("Erro ao concluir a tarefa:", error);
-  } finally {
-    doneTaskLoading.value = false;
-  }
-};
 
 const startEditing = () => {
   isEditing.value = true;
@@ -200,20 +164,6 @@ const stopEditing = (taskID) => {
 
 const cancelEditing = () => {
   isEditing.value = false;
-};
-
-const updateTaskTitle = async (taskID, newTitle) => {
-  editTitleLoading.value = true;
-  try {
-    await api.put(`tasks/${taskID}`, {
-      Title: newTitle.value,
-    });
-    await fetchTasks();
-  } catch (error) {
-    console.error(error);
-  } finally {
-    editTitleLoading.value = false;
-  }
 };
 
 const convertMillisecondsToTime = (milliseconds) => {
