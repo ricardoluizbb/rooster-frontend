@@ -21,6 +21,15 @@
             label="E-mail"
             outlined
           />
+          <q-input
+            rounded
+            dense
+            type="email"
+            class="q-mb-md"
+            v-model="password"
+            label="Senha"
+            outlined
+          />
           <q-btn
             rounded
             dense
@@ -56,6 +65,7 @@ import router from "../../router/index";
 const { sendLoginForm } = useLogin();
 
 const email = ref("");
+const password = ref("");
 const sendButtonLoading = ref(false);
 const $q = useQuasar;
 

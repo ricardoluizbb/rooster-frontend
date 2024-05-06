@@ -15,12 +15,55 @@
           <q-input
             rounded
             dense
+            type="text"
+            class="q-mb-md"
+            v-model="name"
+            label="Nome"
+            outlined
+          />
+          <q-input
+            rounded
+            dense
             type="email"
             class="q-mb-md"
             v-model="email"
             label="E-mail"
             outlined
           />
+          <q-input
+            rounded
+            dense
+            :type="isPwd ? 'password' : 'text'"
+            class="q-mb-md"
+            v-model="password"
+            label="Senha"
+            outlined
+          >
+            <template v-slot:append>
+              <q-icon
+                :name="isPwd ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd = !isPwd"
+              />
+            </template>
+          </q-input>
+          <q-input
+            rounded
+            dense
+            :type="isPwdConfirmation ? 'password' : 'text'"
+            class="q-mb-md"
+            v-model="confirmPassword"
+            label="Confirme sua senha"
+            outlined
+          >
+            <template v-slot:append>
+              <q-icon
+                :name="isPwdConfirmation ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwdConfirmation = !isPwdConfirmation"
+              />
+            </template>
+          </q-input>
           <q-btn
             rounded
             dense
@@ -29,7 +72,7 @@
             class="full-width"
             color="primary"
             label="Criar conta"
-            @click="submit(email)"
+            @click="submit"
           />
         </q-card-section>
         <q-card-section class="text-center">
@@ -48,16 +91,22 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import { useLogin } from "../../composables/use-login";
 import router from "../../router/index";
 
-const { createAccountForm } = useLogin();
-
-const email = ref("");
+const {
+  createAccountForm,
+  sendButtonLoading,
+  email,
+  name,
+  isPwd,
+  isPwdConfirmation,
+  password,
+  confirmPassword,
+} = useLogin();
 
 async function submit() {
-  await createAccountForm(email);
+  await createAccountForm(name, email, password, confirmPassword);
 }
 </script>
 
