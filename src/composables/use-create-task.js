@@ -9,10 +9,12 @@ export function useCreateTask() {
 
   const createTask = async () => {
     try {
-      await api.post("tasks", {
-        title: newTaskTitle.value,
-      });
-      newTaskTitle.value = "";
+      if (newTaskTitle.value.trim()) {
+        await api.post("tasks", {
+          title: newTaskTitle.value,
+        });
+        newTaskTitle.value = "";
+      }
       await fetchTasks();
     } catch (error) {
       console.error("Erro ao criar a tarefa:", error);

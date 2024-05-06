@@ -24,12 +24,20 @@
           <q-input
             rounded
             dense
-            type="email"
+            :type="isPwd ? 'password' : 'text'"
             class="q-mb-md"
             v-model="password"
             label="Senha"
             outlined
-          />
+          >
+            <template v-slot:append>
+              <q-icon
+                :name="isPwd ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd = !isPwd"
+              />
+            </template>
+          </q-input>
           <q-btn
             rounded
             dense
@@ -38,7 +46,7 @@
             class="full-width"
             color="primary"
             label="Entrar"
-            @click="submit(email)"
+            @click="submit"
           />
         </q-card-section>
         <q-card-section class="text-center">
@@ -58,7 +66,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { useQuasar } from "quasar";
 import { useLogin } from "../../composables/use-login";
 import router from "../../router/index";
 
@@ -66,11 +73,11 @@ const { sendLoginForm } = useLogin();
 
 const email = ref("");
 const password = ref("");
+const isPwd = ref(true);
 const sendButtonLoading = ref(false);
-const $q = useQuasar;
 
 const submit = async () => {
-  await sendLoginForm(email);
+  await sendLoginForm(email, password);
 };
 </script>
 

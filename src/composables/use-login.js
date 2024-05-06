@@ -13,17 +13,24 @@ export function useLogin() {
   const password = ref("");
   const confirmPassword = ref("");
 
-  const sendLoginForm = async (email) => {
+  const sendLoginForm = async (email, password) => {
     sendButtonLoading.value = true;
     try {
-      const response = await api.post("login", {
+      await api.post("login", {
         email: email.value,
+        password: password.value,
+        setCookie: true,
       });
-      window.location.href = response.data.magicLink;
-      email.value = "";
+      router.push("/");
+      $q.notify({
+        message: "Bem-vindo(a) ao Rooster!",
+        color: "primary",
+        actions: [{ label: "Fechar", color: "white" }],
+        icon: "sentiment_very_satisfied",
+      });
     } catch (error) {
       $q.notify({
-        message: "O e-mail digitado não é cadastrado",
+        message: "E-mail e/ou senha incorreta",
         color: "negative",
         actions: [{ label: "Fechar", color: "white" }],
         icon: "error",
