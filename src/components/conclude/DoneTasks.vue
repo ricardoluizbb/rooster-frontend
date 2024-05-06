@@ -19,7 +19,7 @@
 
 <script setup>
 import { onMounted } from "vue";
-import { useDoneTaskGrid } from "../composables/use-done-tasks-grid";
+import { useDoneTaskGrid } from "../../composables/use-done-tasks-grid";
 
 const { doneTasksLoading, doneTasks, fetchDoneTasks } = useDoneTaskGrid();
 

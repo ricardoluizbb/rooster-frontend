@@ -10,7 +10,7 @@
 
 <script setup>
 import TaskCard from "./TaskCard.vue";
-import { useTaskGrid } from "../composables/use-task-grid";
+import { useTaskGrid } from "../../composables/use-task-grid";
 import { onMounted, onUpdated } from "vue";
 
 const { tasks, fetchTasks } = useTaskGrid();

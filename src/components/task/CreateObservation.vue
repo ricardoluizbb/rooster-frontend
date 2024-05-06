@@ -63,8 +63,8 @@
 
 <script setup>
 import { ref, defineProps } from "vue";
-import { useTaskGrid } from "../composables/use-task-grid";
-import { api } from "../boot/axios";
+import { useTaskGrid } from "../../composables/use-task-grid";
+import { api } from "../../boot/axios";
 
 const { fetchTasks } = useTaskGrid();
 

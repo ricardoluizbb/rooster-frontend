@@ -121,10 +121,10 @@
 
 <script setup>
 import { defineProps, defineEmits, ref, onMounted, onBeforeUnmount } from "vue";
-import CreateObservation from "../components/CreateObservation.vue";
-import { useTaskCard } from "../composables/use-task-card";
-import RegisteredTimesTable from "../components/RegisteredTimesTable.vue";
-import ConfirmationDialog from "./ConfirmationDialog.vue";
+import CreateObservation from "./CreateObservation.vue";
+import { useTaskCard } from "../../composables/use-task-card";
+import RegisteredTimesTable from "./RegisteredTimesTable.vue";
+import ConfirmationDialog from "../shared/ConfirmationDialog.vue";
 
 const isEditing = ref(false);
 const editedTitle = ref("");

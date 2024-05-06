@@ -79,9 +79,9 @@
 
 <script setup>
 import { ref, defineProps, defineEmits, computed, onMounted } from "vue";
-import { useTaskCard } from "../composables/use-task-card";
-import { useTaskGrid } from "../composables/use-task-grid";
-import { api } from "../boot/axios";
+import { useTaskCard } from "../../composables/use-task-card";
+import { useTaskGrid } from "../../composables/use-task-grid";
+import { api } from "../../boot/axios";
 
 const props = defineProps(["task", "gridLoading"]);
 const emit = defineEmits(["timeUpdated"]);

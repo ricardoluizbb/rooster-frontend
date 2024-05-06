@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import UserLogin from "../components/UserLogin.vue";
+import UserLogin from "../components/account/UserLogin.vue";
 </script>
 
 <style>

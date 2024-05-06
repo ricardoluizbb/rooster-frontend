@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import CreateAccount from "../components/CreateAccount.vue";
+import CreateAccount from "../components/account/CreateAccount.vue";
 </script>
 
 <style>

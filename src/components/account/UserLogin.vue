@@ -2,12 +2,12 @@
   <q-page class="bg-primary flex flex-center">
     <q-card class="form-card flex">
       <q-card-section class="half-width q-pa-none">
-        <q-img class="full-height" src="../assets/clock.jpg"></q-img>
+        <q-img class="full-height" src="../../assets/clock.jpg" />
       </q-card-section>
       <q-card-section class="half-width self-center">
         <q-card-section class="text-center">
           <q-img
-            src="../assets/rooster1.svg"
+            src="../../assets/rooster1.svg"
             style="height: 67px; max-width: 282px"
           ></q-img>
         </q-card-section>
@@ -50,8 +50,8 @@
 <script setup>
 import { ref } from "vue";
 import { useQuasar } from "quasar";
-import { useLogin } from "../composables/use-login";
-import router from "../router/index";
+import { useLogin } from "../../composables/use-login";
+import router from "../../router/index";
 
 const { sendLoginForm } = useLogin();
 

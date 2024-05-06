@@ -14,10 +14,9 @@
 
 <script setup>
 import { defineProps } from "vue";
-import { defineComponent } from "vue";
-import CreateTask from "../components/CreateTask.vue";
-import TaskGrid from "../components/TaskGrid.vue";
-import DoneTasks from "../components/DoneTasks.vue";
+import CreateTask from "../components/task/CreateTask.vue";
+import TaskGrid from "../components/task/TaskGrid.vue";
+import DoneTasks from "../components/conclude/DoneTasks.vue";
 
 const props = defineProps(["selectedTab"]);
 </script>
