@@ -12,6 +12,13 @@ export function useLogin() {
   const isPwdConfirmation = ref(true);
   const password = ref("");
   const confirmPassword = ref("");
+  const whoAmILoading = ref(false);
+
+  const whoAmI = async () => {
+    whoAmILoading.value = true;
+    await api.get("whoami");
+    whoAmILoading.value = false;
+  };
 
   const sendLoginForm = async (email, password) => {
     sendButtonLoading.value = true;
@@ -73,6 +80,7 @@ export function useLogin() {
   return {
     sendLoginForm,
     createAccountForm,
+    whoAmI,
     sendButtonLoading,
     email,
     name,
@@ -80,5 +88,6 @@ export function useLogin() {
     isPwdConfirmation,
     password,
     confirmPassword,
+    whoAmILoading,
   };
 }
