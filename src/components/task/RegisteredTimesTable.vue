@@ -2,7 +2,7 @@
   <q-card flat class="q-mt-md q-ml-md">
     <q-card-section class="q-pt-none">
       <p class="text-h6 text-weight-regular">Tempos Registrados</p>
-      <q-list v-if="!gridLoading">
+      <q-list v-if="!checkLoading">
         <div v-if="task.timesRecord.length">
           <div
             v-for="timeRecord in task.timesRecord"
@@ -78,14 +78,12 @@
 <script setup>
 import { ref, defineProps, defineEmits, computed, onMounted } from "vue";
 import { useTaskCard } from "../../composables/use-task-card";
-import { useTaskGrid } from "../../composables/use-task-grid";
 import { api } from "../../boot/axios";
 
 const props = defineProps(["task", "gridLoading"]);
 const emit = defineEmits(["timeUpdated"]);
 
 const { formatarData } = useTaskCard(props.task);
-const { RegisteredTimesLoading } = useTaskGrid();
 const checkLoading = ref(false);
 
 const editingId = ref(null);
