@@ -1,7 +1,7 @@
 <template>
   <q-card class="q-mt-md" flat>
     <div class="q-mr-lg" style="width: 395px">
-      <div v-if="!task.tag" class="row justify-center">
+      <div v-if="!task.tag" class="row">
         <p class="text-h6 text-weight-regular">Observação</p>
         <q-input
           :disable="observationBtnLoading"
@@ -15,9 +15,7 @@
         />
       </div>
       <div v-else>
-        <div class="">
-          <p class="text-h6 text-weight-regular">Observação</p>
-        </div>
+        <p class="text-h6 text-weight-regular">Observação</p>
         <div class="row" v-if="isEditing">
           <q-input
             v-model="observationText"

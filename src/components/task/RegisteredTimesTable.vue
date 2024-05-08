@@ -64,9 +64,7 @@
             </div>
           </div>
         </div>
-        <div v-else flat class="empty-time text-center">
-          <span class="text-caption text-grey-7">Não há registros</span>
-        </div>
+        <span v-else class="text-caption text-grey-7">Não há registros</span>
       </q-list>
       <q-list v-else>
         <q-skeleton class="q-mb-sm" :style="{ width: skeletonWidth }" />
@@ -182,11 +180,11 @@ const skeletonWidth = computed(() => {
   cursor: pointer;
 }
 
-.empty-time {
+/* .empty-time {
   height: 100px;
   width: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 </style>
