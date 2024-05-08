@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-expansion-item class="expansion-item" switch-toggle-side>
+    <q-expansion-item popup class="expansion-item" switch-toggle-side>
       <!-- Closed Expansion item -->
       <template v-slot:header>
         <div style="width: 100%" class="row justify-between">
@@ -22,20 +22,18 @@
               dense
               style="width: 500px"
               outlined
-              @click.stop
               @keypress.enter="stopEditing(task.id)"
               @blur="cancelEditing(task.id)"
             />
           </div>
-          <div v-if="!isEditing" class="column text-caption text-center">
-            <span class="text-caption">Cronômetro</span>
-            <q-chip dense class="text-grey-7">{{ formattedTime }}</q-chip>
-          </div>
-          <div class="row">
+          <div v-if="!isEditing" class="row q-gutter-xs">
+            <div class="column text-caption text-center q-pr-md">
+              <span>Cronômetro</span>
+              <q-chip dense class="text-grey-7">{{ formattedTime }}</q-chip>
+            </div>
             <q-btn
               v-if="disableStartBtn"
               no-caps
-              class="q-pr-sm"
               flat
               dense
               icon="stop_circle"
@@ -47,8 +45,6 @@
             </q-btn>
             <q-btn
               v-else
-              no-caps
-              class="q-pr-sm"
               flat
               dense
               icon="play_circle"
@@ -59,7 +55,6 @@
               <q-tooltip>Iniciar</q-tooltip>
             </q-btn>
             <q-btn
-              no-caps
               flat
               dense
               icon="check_circle"
@@ -70,7 +65,6 @@
               <q-tooltip>Concluir</q-tooltip>
             </q-btn>
             <q-btn
-              no-caps
               flat
               dense
               icon="delete"
@@ -203,7 +197,6 @@ const saveTaskTime = () => {
 <style scoped>
 .expansion-item {
   width: 100%;
-  max-width: 950px;
   margin: 0 auto;
 }
 

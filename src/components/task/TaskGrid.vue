@@ -25,9 +25,9 @@ onMounted(async () => {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  height: 350px;
+  height: 500px;
   overflow: auto;
-  border: 1px solid #eff0f2;
+
   border-radius: 10px;
 }
 </style>

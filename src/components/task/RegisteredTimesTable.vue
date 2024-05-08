@@ -1,7 +1,7 @@
 <template>
   <q-card flat class="q-mt-md q-ml-md">
     <q-card-section class="q-pt-none">
-      <p class="text-center text-h6 text-weight-regular">Tempos Registrados</p>
+      <p class="text-h6 text-weight-regular">Tempos Registrados</p>
       <q-list v-if="!gridLoading">
         <div v-if="task.timesRecord.length">
           <div
@@ -31,16 +31,16 @@
               </template>
               <template v-else>
                 <q-card
-                  class="times-info row justify-between"
+                  class="times-info row justify-between q-pa-xs"
                   :style="{ width: cardWidth }"
                   @click="toggleEditingMode(timeRecord.id)"
                   flat
                 >
-                  <span class="text-caption">
+                  <span class="text-body3">
                     {{ formatarData(timeRecord.start_time) }}
                   </span>
-                  <q-icon color="grey-7" name="arrow_right_alt" />
-                  <span class="text-caption">
+                  <q-icon size="20px" color="grey-7" name="arrow_right" />
+                  <span class="text-body3">
                     {{ formatarData(timeRecord.end_time) }}
                   </span>
                 </q-card>
