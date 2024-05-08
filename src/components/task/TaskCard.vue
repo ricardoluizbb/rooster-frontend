@@ -39,11 +39,12 @@
               flat
               dense
               icon="stop_circle"
-              label="Parar"
               color="primary"
               :loading="pauseLoading"
               @click.stop="pauseTask(task.id)"
-            />
+            >
+              <q-tooltip>Pausar</q-tooltip>
+            </q-btn>
             <q-btn
               v-else
               no-caps
@@ -51,31 +52,34 @@
               flat
               dense
               icon="play_circle"
-              label="Iniciar"
               color="primary"
               :loading="startLoading"
               @click.stop="startTask(task.id)"
-            />
+            >
+              <q-tooltip>Iniciar</q-tooltip>
+            </q-btn>
             <q-btn
               no-caps
               flat
               dense
               icon="check_circle"
-              label="Concluir"
               color="positive"
               :disable="disableStartBtn"
               @click.stop="showDoneTaskDialog = true"
-            />
+            >
+              <q-tooltip>Concluir</q-tooltip>
+            </q-btn>
             <q-btn
               no-caps
               flat
               dense
               icon="delete"
-              label="Excluir"
               color="negative"
               :disable="disableStartBtn"
               @click.stop="showDeleteDialog = true"
-            />
+            >
+              <q-tooltip>Excluir</q-tooltip>
+            </q-btn>
           </div>
         </div>
       </template>
@@ -210,7 +214,7 @@ const saveTaskTime = () => {
 }
 
 .task-title {
-  width: 450px;
+  width: 600px;
   word-break: break-all;
 }
 </style>
