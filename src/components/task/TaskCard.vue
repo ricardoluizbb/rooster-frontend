@@ -81,7 +81,7 @@
       <!-- Opened expansion item -->
       <q-card bordered class="row justify-between task-card">
         <RegisteredTimesTable
-          @timeUpdated="updateTotalTime(taskID)"
+          @timeUpdated="updateTotalTime(task.id)"
           :task="task"
           :gridLoading="gridLoading"
         />

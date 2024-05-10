@@ -3,9 +3,9 @@
     <q-card-section class="q-pt-none">
       <p class="text-h6 text-weight-regular">Tempos Registrados</p>
       <q-list v-if="!checkLoading">
-        <div v-if="task.timesRecord.length">
+        <div v-if="task.registered_times?.length">
           <div
-            v-for="timeRecord in task.timesRecord"
+            v-for="timeRecord in task.registered_times"
             :key="timeRecord.id"
             :class="{ 'q-pb-sm': editingId === timeRecord.id }"
           >
@@ -110,7 +110,7 @@ const toggleEditingMode = (id) => {
   } else {
     // Se não estiver editando, inicie a edição
     editingId.value = id;
-    const timeRecordToEdit = props.task.timesRecord.find(
+    const timeRecordToEdit = props.task.registered_times.find(
       (timeRecord) => timeRecord.id === id
     );
     if (timeRecordToEdit) {
