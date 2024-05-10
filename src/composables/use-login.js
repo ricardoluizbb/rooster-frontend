@@ -21,8 +21,8 @@ export function useLogin() {
   };
 
   const sendLoginForm = async (email, password) => {
-    sendButtonLoading.value = true;
     try {
+      sendButtonLoading.value = true;
       await api.post("login", {
         email: email.value,
         password: password.value,
@@ -48,8 +48,8 @@ export function useLogin() {
   };
 
   const createAccountForm = async (name, email, password, confirmPassword) => {
-    sendButtonLoading.value = true;
     try {
+      sendButtonLoading.value = true;
       await api.post("registration", {
         name: name.value,
         email: email.value,

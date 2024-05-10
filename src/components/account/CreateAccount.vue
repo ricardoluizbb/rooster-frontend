@@ -73,7 +73,7 @@
             color="primary"
             label="Criar conta"
             @click="submit"
-            @keypress.enter="submit"
+            @keypress.enter="sendForm"
           />
         </q-card-section>
         <q-card-section class="text-center">
@@ -106,7 +106,7 @@ const {
   confirmPassword,
 } = useLogin();
 
-const submit = async () => {
+const sendForm = async () => {
   await createAccountForm(name, email, password, confirmPassword);
 };
 </script>

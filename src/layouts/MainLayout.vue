@@ -30,12 +30,13 @@
     </q-page-container>
   </q-layout>
   <q-layout v-else>
-    <h1>Splash screen</h1>
+    <SplashScreenView :splashLoading="whoAmILoading" />
   </q-layout>
 </template>
 
 <script setup>
 import { useLogin } from "../composables/use-login";
+import SplashScreenView from "../pages/SplashScreenView.vue";
 import { api } from "../boot/axios";
 import { ref } from "vue";
 const selectedTab = ref("MyTasks");
