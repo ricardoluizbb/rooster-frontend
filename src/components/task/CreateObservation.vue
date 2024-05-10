@@ -1,57 +1,36 @@
 <template>
   <q-card class="q-mt-md" flat>
     <div class="q-mr-lg" style="width: 395px">
-      <div v-if="!task.tag" class="row justify-center">
+      <div v-if="!task.tag" class="row">
         <p class="text-h6 text-weight-regular">Observação</p>
         <q-input
           :disable="observationBtnLoading"
           v-model="observationText"
           @keypress.enter="addObservation(task.id)"
-          label="Adicione uma observação"
-          style="width: 80%"
-          type="textarea"
+          label="Pressione enter para criar"
+          class="full-width"
+          type="text"
           dense
           outlined
         />
-        <q-btn
-          @click.stop="addObservation(task.id)"
-          color="primary"
-          icon="add_circle"
-          class="q-ml-sm"
-          dense
-          flat
-          :loading="observationBtnLoading"
-        />
       </div>
       <div v-else>
-        <div class="text-center">
-          <p class="text-h6 text-weight-regular">Observação</p>
-        </div>
+        <p class="text-h6 text-weight-regular">Observação</p>
         <div class="row" v-if="isEditing">
           <q-input
             v-model="observationText"
             @keypress.enter="addObservation(task.id)"
             @click.stop="startEditing"
-            label="Editar observação"
-            style="width: 80%"
-            type="textarea"
-            dense
+            class="full-width"
+            type="text"
             outlined
-          />
-          <q-btn
-            @click.stop="addObservation(task.id)"
-            color="primary"
-            icon="done"
-            class="q-ml-sm"
             dense
-            flat
-            :loading="observationBtnLoading"
           />
         </div>
         <p
           @click.stop="startEditing"
           v-else
-          class="observation text-caption text-justify"
+          class="observation text-justify text-body3"
           style="word-break: break-word"
         >
           {{ task.tag }}

@@ -46,7 +46,7 @@
             class="full-width"
             color="primary"
             label="Entrar"
-            @click="submit"
+            @click="sendForm"
           />
         </q-card-section>
         <q-card-section class="text-center">
@@ -69,14 +69,13 @@ import { ref } from "vue";
 import { useLogin } from "../../composables/use-login";
 import router from "../../router/index";
 
-const { sendLoginForm } = useLogin();
+const { sendLoginForm, sendButtonLoading } = useLogin();
 
 const email = ref("");
 const password = ref("");
 const isPwd = ref(true);
-const sendButtonLoading = ref(false);
 
-const submit = async () => {
+const sendForm = async () => {
   await sendLoginForm(email, password);
 };
 </script>

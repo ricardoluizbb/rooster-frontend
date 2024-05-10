@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout v-if="!whoAmILoading" view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar class="row justify-between">
         <div>
@@ -29,12 +29,21 @@
       <router-view :selectedTab="selectedTab" />
     </q-page-container>
   </q-layout>
+  <q-layout v-else>
+    <SplashScreenView :splashLoading="whoAmILoading" />
+  </q-layout>
 </template>
 
 <script setup>
+import { useLogin } from "../composables/use-login";
+import SplashScreenView from "../pages/SplashScreenView.vue";
 import { api } from "../boot/axios";
 import { ref } from "vue";
-const selectedTab = ref("MyTasks"); // Definindo a aba inicial
+const selectedTab = ref("MyTasks");
+
+const { whoAmI, whoAmILoading } = useLogin();
+
+whoAmI();
 
 const generateReport = async () => {
   try {

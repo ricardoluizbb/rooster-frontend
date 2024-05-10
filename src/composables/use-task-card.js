@@ -139,9 +139,9 @@ export function useTaskCard(task) {
     }
   };
 
-  const updateTotalTime = async () => {
+  const updateTotalTime = async (taskID) => {
     gridLoading.value = true;
-    await getTotalTime(props.task.id);
+    await getTotalTime(taskID);
     await fetchTasks();
     gridLoading.value = false;
   };

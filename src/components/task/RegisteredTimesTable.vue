@@ -1,11 +1,11 @@
 <template>
   <q-card flat class="q-mt-md q-ml-md">
     <q-card-section class="q-pt-none">
-      <p class="text-center text-h6 text-weight-regular">Tempos Registrados</p>
-      <q-list v-if="!gridLoading">
-        <div v-if="task.timesRecord.length">
+      <p class="text-h6 text-weight-regular">Tempos Registrados</p>
+      <q-list v-if="!checkLoading">
+        <div v-if="task.registered_times?.length">
           <div
-            v-for="timeRecord in task.timesRecord"
+            v-for="timeRecord in task.registered_times"
             :key="timeRecord.id"
             :class="{ 'q-pb-sm': editingId === timeRecord.id }"
           >
@@ -31,16 +31,16 @@
               </template>
               <template v-else>
                 <q-card
-                  class="times-info row justify-between"
+                  class="times-info row justify-between q-pa-xs"
                   :style="{ width: cardWidth }"
                   @click="toggleEditingMode(timeRecord.id)"
                   flat
                 >
-                  <span class="text-caption">
+                  <span class="text-body3">
                     {{ formatarData(timeRecord.start_time) }}
                   </span>
-                  <q-icon color="grey-7" name="arrow_right_alt" />
-                  <span class="text-caption">
+                  <q-icon size="20px" color="grey-7" name="arrow_right" />
+                  <span class="text-body3">
                     {{ formatarData(timeRecord.end_time) }}
                   </span>
                 </q-card>
@@ -64,9 +64,7 @@
             </div>
           </div>
         </div>
-        <div v-else flat class="empty-time text-center">
-          <span class="text-caption text-grey-7">Não há registros</span>
-        </div>
+        <span v-else class="text-caption text-grey-7">Não há registros</span>
       </q-list>
       <q-list v-else>
         <q-skeleton class="q-mb-sm" :style="{ width: skeletonWidth }" />
@@ -80,14 +78,12 @@
 <script setup>
 import { ref, defineProps, defineEmits, computed, onMounted } from "vue";
 import { useTaskCard } from "../../composables/use-task-card";
-import { useTaskGrid } from "../../composables/use-task-grid";
 import { api } from "../../boot/axios";
 
 const props = defineProps(["task", "gridLoading"]);
 const emit = defineEmits(["timeUpdated"]);
 
 const { formatarData } = useTaskCard(props.task);
-const { RegisteredTimesLoading } = useTaskGrid();
 const checkLoading = ref(false);
 
 const editingId = ref(null);
@@ -114,7 +110,7 @@ const toggleEditingMode = (id) => {
   } else {
     // Se não estiver editando, inicie a edição
     editingId.value = id;
-    const timeRecordToEdit = props.task.timesRecord.find(
+    const timeRecordToEdit = props.task.registered_times.find(
       (timeRecord) => timeRecord.id === id
     );
     if (timeRecordToEdit) {
@@ -182,11 +178,11 @@ const skeletonWidth = computed(() => {
   cursor: pointer;
 }
 
-.empty-time {
+/* .empty-time {
   height: 100px;
   width: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 </style>

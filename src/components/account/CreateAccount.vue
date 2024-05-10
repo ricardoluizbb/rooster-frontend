@@ -67,12 +67,13 @@
           <q-btn
             rounded
             dense
-            :disabled="!email"
+            :disabled="!(email && name && password && confirmPassword)"
             :loading="sendButtonLoading"
             class="full-width"
             color="primary"
             label="Criar conta"
             @click="submit"
+            @keypress.enter="sendForm"
           />
         </q-card-section>
         <q-card-section class="text-center">
@@ -105,9 +106,9 @@ const {
   confirmPassword,
 } = useLogin();
 
-async function submit() {
+const sendForm = async () => {
   await createAccountForm(name, email, password, confirmPassword);
-}
+};
 </script>
 
 <style scoped>
