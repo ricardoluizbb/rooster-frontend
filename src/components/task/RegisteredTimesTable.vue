@@ -33,7 +33,7 @@
                 <q-card
                   class="times-info row justify-between q-pa-xs"
                   :style="{ width: cardWidth }"
-                  @click="toggleEditingMode(timeRecord.id)"
+                  @click="toggleEditingMode(timeRecord.id, task)"
                   flat
                 >
                   <span class="text-body3">
@@ -53,7 +53,7 @@
                 size="10px"
                 flat
                 color="grey-7"
-                @click="updateRegisteredTime(timeRecord.id)"
+                @click="handleUpdateRegisteredTime(timeRecord.id, task.id)"
                 :loading="checkLoading"
                 :disable="!isInputValid"
               >
@@ -76,92 +76,33 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, computed, onMounted } from "vue";
+import { defineProps, defineEmits, computed, onMounted } from "vue";
 import { useTaskCard } from "../../composables/use-task-card";
-import { api } from "../../boot/axios";
 
 const props = defineProps(["task", "gridLoading"]);
 const emit = defineEmits(["timeUpdated"]);
 
-const { formatDate } = useTaskCard(props.task);
-const checkLoading = ref(false);
-
-const editingId = ref(null);
-const editedTimeRecord = ref({
-  start_time: "",
-  end_time: "",
-});
-
-const dateMask = "##/##/#### ##:##:##";
+const {
+  formatDate,
+  checkLoading,
+  editingId,
+  dateMask,
+  editedTimeRecord,
+  toggleEditingMode,
+  updateRegisteredTime,
+} = useTaskCard(props.task);
 
 const isInputValid = computed(() => {
   // Verifica se o input contém todos os caracteres do dateMask
   return (
-    editedTimeRecord.value.start_time.length === dateMask.length &&
-    editedTimeRecord.value.end_time.length === dateMask.length
+    editedTimeRecord.value.start_time.length === dateMask.value.length &&
+    editedTimeRecord.value.end_time.length === dateMask.value.length
   );
 });
 
-const toggleEditingMode = (id) => {
-  if (editingId.value === id) {
-    // Se já estiver editando, salve as alterações aqui
-    editingId.value = null;
-    editedTimeRecord.value = {};
-  } else {
-    // Se não estiver editando, inicie a edição
-    editingId.value = id;
-    const timeRecordToEdit = props.task.registered_times.find(
-      (timeRecord) => timeRecord.id === id
-    );
-    if (timeRecordToEdit) {
-      editedTimeRecord.value = { ...timeRecordToEdit };
-      // Formatando as datas ao iniciar a edição
-      editedTimeRecord.value.start_time = formatDateForInput(
-        editedTimeRecord.value.start_time
-      );
-      editedTimeRecord.value.end_time = formatDateForInput(
-        editedTimeRecord.value.end_time
-      );
-    }
-  }
-};
-
-const updateRegisteredTime = async (id) => {
-  try {
-    checkLoading.value = true;
-    await api.put(`tasks/${props.task.id}/registered-times/${id}`, {
-      startTime: transformToISOFormat(editedTimeRecord.value.start_time),
-      endTime: transformToISOFormat(editedTimeRecord.value.end_time),
-    });
-
-    editingId.value = null;
-    emit("timeUpdated");
-    checkLoading.value = false;
-  } catch (error) {
-    console.error("Erro ao atualizar o tempo registrado:", error);
-  }
-};
-
-const transformToISOFormat = (inputDate) => {
-  const [datePart, timePart] = inputDate.split(" ");
-  const [day, month, year] = datePart.split("/");
-  const [hour, minute, second] = timePart.split(":");
-
-  const isoDate = new Date(year, month - 1, day, hour, minute, second);
-
-  return isoDate.toISOString();
-};
-
-const formatDateForInput = (dateString) => {
-  // Formata a data para o formato adequado ao exibir no input
-  const date = new Date(dateString);
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear().toString().padStart(4, "0");
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-  const seconds = date.getSeconds().toString().padStart(2, "0");
-  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+const handleUpdateRegisteredTime = async (timeRecordID, task) => {
+  await updateRegisteredTime(timeRecordID, task);
+  emit("timeUpdated");
 };
 
 const cardWidth = computed(() => {

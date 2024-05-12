@@ -25,6 +25,13 @@ export function useTaskCard(task) {
   const editTitleLoading = ref(false);
   const isEditingTitle = ref(false);
   const editedTitle = ref("");
+  const checkLoading = ref(false);
+  const editingId = ref(null);
+  const dateMask = ref("##/##/#### ##:##:##");
+  const editedTimeRecord = ref({
+    start_time: "",
+    end_time: "",
+  });
 
   const startTask = async (taskID) => {
     if (!taskID) {
@@ -241,6 +248,67 @@ export function useTaskCard(task) {
     return new Date(dataString).toLocaleDateString("pt-BR", options);
   };
 
+  const toggleEditingMode = (registeredTimeID, task) => {
+    if (editingId.value === registeredTimeID) {
+      // Se já estiver editando, salve as alterações aqui
+      editingId.value = null;
+      editedTimeRecord.value = {};
+    } else {
+      // Se não estiver editando, inicie a edição
+      editingId.value = registeredTimeID;
+      const timeRecordToEdit = task.registered_times.find(
+        (timeRecord) => timeRecord.id === registeredTimeID
+      );
+      if (timeRecordToEdit) {
+        editedTimeRecord.value = { ...timeRecordToEdit };
+        // Formatando as datas ao iniciar a edição
+        editedTimeRecord.value.start_time = formatDateForInput(
+          editedTimeRecord.value.start_time
+        );
+        editedTimeRecord.value.end_time = formatDateForInput(
+          editedTimeRecord.value.end_time
+        );
+      }
+    }
+  };
+
+  const updateRegisteredTime = async (registeredTimeID, taskID) => {
+    try {
+      checkLoading.value = true;
+      await api.put(`tasks/${taskID}/registered-times/${registeredTimeID}`, {
+        startTime: transformToISOFormat(editedTimeRecord.value.start_time),
+        endTime: transformToISOFormat(editedTimeRecord.value.end_time),
+      });
+
+      editingId.value = null;
+      checkLoading.value = false;
+    } catch (error) {
+      console.error("Erro ao atualizar o tempo registrado:", error);
+    }
+  };
+
+  const transformToISOFormat = (inputDate) => {
+    const [datePart, timePart] = inputDate.split(" ");
+    const [day, month, year] = datePart.split("/");
+    const [hour, minute, second] = timePart.split(":");
+
+    const isoDate = new Date(year, month - 1, day, hour, minute, second);
+
+    return isoDate.toISOString();
+  };
+
+  const formatDateForInput = (dateString) => {
+    // Formata a data para o formato adequado ao exibir no input
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear().toString().padStart(4, "0");
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  };
+
   return {
     formattedTime,
     startTime,
@@ -258,6 +326,12 @@ export function useTaskCard(task) {
     editTitleLoading,
     isEditingTitle,
     editedTitle,
+    checkLoading,
+    editingId,
+    dateMask,
+    editedTimeRecord,
+    toggleEditingMode,
+    updateRegisteredTime,
     startTask,
     pauseTask,
     isValidDate,
