@@ -199,31 +199,35 @@ export function useTaskCard(task) {
     return num < 10 ? `0${num}` : num;
   };
 
-  const startEditing = (task) => {
+  const startEditingTitle = (task) => {
     isEditingTitle.value = true;
     editedTitle.value = task.title;
   };
 
-  const stopEditing = (taskID) => {
+  const stopEditingTitle = (taskID) => {
     updateTaskTitle(taskID, editedTitle);
     isEditingTitle.value = false;
   };
 
-  const cancelEditing = () => {
+  const cancelEditingTitle = () => {
     isEditingTitle.value = false;
   };
 
-  // Necessário??
-  onBeforeUnmount(() => {
-    clearInterval(timerInterval);
-  });
+  const convertMillisecondsToTime = () => {
+    if (!totalInMilliseconds.value) {
+      return "00h 00m 00s";
+    }
+    const totalSeconds = Math.floor(totalInMilliseconds.value / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
 
-  // Necessário??
-  onMounted(() => {
-    getTotalTime(task.id);
-  });
+    const pad = (num) => (num < 10 ? `0${num}` : num);
 
-  const formatarData = (dataString) => {
+    return `${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+  };
+
+  const formatDate = (dataString) => {
     const options = {
       year: "numeric",
       month: "short",
@@ -257,13 +261,15 @@ export function useTaskCard(task) {
     startTask,
     pauseTask,
     isValidDate,
-    formatarData,
+    formatDate,
     deleteTask,
     completeTask,
     updateTotalTime,
     updateTaskTitle,
-    startEditing,
-    stopEditing,
-    cancelEditing,
+    startEditingTitle,
+    stopEditingTitle,
+    cancelEditingTitle,
+    convertMillisecondsToTime,
+    getTotalTime,
   };
 }

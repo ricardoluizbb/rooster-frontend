@@ -37,11 +37,11 @@
                   flat
                 >
                   <span class="text-body3">
-                    {{ formatarData(timeRecord.start_time) }}
+                    {{ formatDate(timeRecord.start_time) }}
                   </span>
                   <q-icon size="20px" color="grey-7" name="arrow_right" />
                   <span class="text-body3">
-                    {{ formatarData(timeRecord.end_time) }}
+                    {{ formatDate(timeRecord.end_time) }}
                   </span>
                 </q-card>
               </template>
@@ -83,7 +83,7 @@ import { api } from "../../boot/axios";
 const props = defineProps(["task", "gridLoading"]);
 const emit = defineEmits(["timeUpdated"]);
 
-const { formatarData } = useTaskCard(props.task);
+const { formatDate } = useTaskCard(props.task);
 const checkLoading = ref(false);
 
 const editingId = ref(null);
@@ -177,12 +177,4 @@ const skeletonWidth = computed(() => {
 .times-info {
   cursor: pointer;
 }
-
-/* .empty-time {
-  height: 100px;
-  width: 260px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
 </style>

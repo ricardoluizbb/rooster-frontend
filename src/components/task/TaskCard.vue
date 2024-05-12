@@ -10,11 +10,11 @@
             class="flex column task-title"
           >
             <q-skeleton v-if="editTitleLoading" class="q-mb-sm" width="350px" />
-            <span v-else @click.stop="startEditing(task)">{{
+            <span v-else @click.stop="startEditingTitle(task)">{{
               task.title
             }}</span>
             <span class="text-grey-7">
-              {{ convertMillisecondsToTime(totalInMilliseconds) }}
+              {{ convertMillisecondsToTime() }}
             </span>
           </div>
           <div v-else>
@@ -24,8 +24,8 @@
               dense
               style="width: 500px"
               outlined
-              @keypress.enter="stopEditing(task.id)"
-              @blur="cancelEditing(task.id)"
+              @keypress.enter="stopEditingTitle(task.id)"
+              @blur="cancelEditingTitle(task.id)"
             />
           </div>
           <div v-if="!isEditingTitle" class="row q-gutter-xs">
@@ -131,7 +131,6 @@ const emit = defineEmits(["taskDeleted"]);
 
 const {
   formattedTime,
-  totalInMilliseconds,
   startLoading,
   pauseLoading,
   disableStartBtn,
@@ -148,39 +147,14 @@ const {
   updateTotalTime,
   deleteTask,
   completeTask,
-  startEditing,
-  stopEditing,
-  cancelEditing,
+  startEditingTitle,
+  stopEditingTitle,
+  cancelEditingTitle,
+  convertMillisecondsToTime,
+  getTotalTime,
 } = useTaskCard(props.task);
 
-const convertMillisecondsToTime = (milliseconds) => {
-  if (!milliseconds) {
-    return "00h 00m 00s";
-  }
-  const totalSeconds = Math.floor(milliseconds / 1000);
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  const pad = (num) => (num < 10 ? `0${num}` : num);
-
-  return `${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
-};
-
-onMounted(() => {
-  // Adiciona um ouvinte para o mudança de evento antes de descarregar o componente
-  window.addEventListener("beforeunload", saveTaskTime);
-});
-
-onBeforeUnmount(() => {
-  // Remove o ouvinte do evento antes de descarregar o componente
-  window.removeEventListener("beforeunload", saveTaskTime);
-});
-
-const saveTaskTime = () => {
-  // Salva o tempo atual do cronômetro no armazenamento local
-  localStorage.setItem("taskTime", totalInMilliseconds.value.toString());
-};
+getTotalTime(props.task.id);
 </script>
 
 <style scoped>
