@@ -72,7 +72,7 @@
             class="full-width"
             color="primary"
             label="Criar conta"
-            @click="submit"
+            @click="sendForm"
             @keypress.enter="sendForm"
           />
         </q-card-section>

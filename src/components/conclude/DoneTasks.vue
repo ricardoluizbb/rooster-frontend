@@ -18,14 +18,11 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
 import { useDoneTaskGrid } from "../../composables/use-done-tasks-grid";
 
 const { doneTasksLoading, doneTasks, fetchDoneTasks } = useDoneTaskGrid();
 
-onMounted(() => {
-  fetchDoneTasks();
-});
+fetchDoneTasks();
 </script>
 
 <style scoped>

@@ -23,6 +23,8 @@ export function useTaskCard(task) {
   const doneTaskLoading = ref(false);
   const gridLoading = ref(false);
   const editTitleLoading = ref(false);
+  const isEditingTitle = ref(false);
+  const editedTitle = ref("");
 
   const startTask = async (taskID) => {
     if (!taskID) {
@@ -197,10 +199,26 @@ export function useTaskCard(task) {
     return num < 10 ? `0${num}` : num;
   };
 
+  const startEditing = (task) => {
+    isEditingTitle.value = true;
+    editedTitle.value = task.title;
+  };
+
+  const stopEditing = (taskID) => {
+    updateTaskTitle(taskID, editedTitle);
+    isEditingTitle.value = false;
+  };
+
+  const cancelEditing = () => {
+    isEditingTitle.value = false;
+  };
+
+  // Necessário??
   onBeforeUnmount(() => {
     clearInterval(timerInterval);
   });
 
+  // Necessário??
   onMounted(() => {
     getTotalTime(task.id);
   });
@@ -234,6 +252,8 @@ export function useTaskCard(task) {
     doneTaskLoading,
     gridLoading,
     editTitleLoading,
+    isEditingTitle,
+    editedTitle,
     startTask,
     pauseTask,
     isValidDate,
@@ -242,5 +262,8 @@ export function useTaskCard(task) {
     completeTask,
     updateTotalTime,
     updateTaskTitle,
+    startEditing,
+    stopEditing,
+    cancelEditing,
   };
 }

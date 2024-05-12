@@ -6,11 +6,13 @@
         <div style="width: 100%" class="row justify-between">
           <div
             style="min-width: 200px"
-            v-if="!isEditing"
+            v-if="!isEditingTitle"
             class="flex column task-title"
           >
             <q-skeleton v-if="editTitleLoading" class="q-mb-sm" width="350px" />
-            <span v-else @click.stop="startEditing">{{ task.title }}</span>
+            <span v-else @click.stop="startEditing(task)">{{
+              task.title
+            }}</span>
             <span class="text-grey-7">
               {{ convertMillisecondsToTime(totalInMilliseconds) }}
             </span>
@@ -26,7 +28,7 @@
               @blur="cancelEditing(task.id)"
             />
           </div>
-          <div v-if="!isEditing" class="row q-gutter-xs">
+          <div v-if="!isEditingTitle" class="row q-gutter-xs">
             <div class="column text-caption text-center q-pr-md">
               <span>Cronômetro</span>
               <q-chip dense class="text-grey-7">{{ formattedTime }}</q-chip>
@@ -124,9 +126,6 @@ import { useTaskCard } from "../../composables/use-task-card";
 import RegisteredTimesTable from "./RegisteredTimesTable.vue";
 import ConfirmationDialog from "../shared/ConfirmationDialog.vue";
 
-const isEditing = ref(false);
-const editedTitle = ref("");
-
 const props = defineProps(["task"]);
 const emit = defineEmits(["taskDeleted"]);
 
@@ -142,27 +141,17 @@ const {
   doneTaskLoading,
   gridLoading,
   editTitleLoading,
+  isEditingTitle,
+  editedTitle,
   startTask,
   pauseTask,
   updateTotalTime,
   deleteTask,
   completeTask,
-  updateTaskTitle,
+  startEditing,
+  stopEditing,
+  cancelEditing,
 } = useTaskCard(props.task);
-
-const startEditing = () => {
-  isEditing.value = true;
-  editedTitle.value = props.task.title;
-};
-
-const stopEditing = (taskID) => {
-  updateTaskTitle(taskID, editedTitle);
-  isEditing.value = false;
-};
-
-const cancelEditing = () => {
-  isEditing.value = false;
-};
 
 const convertMillisecondsToTime = (milliseconds) => {
   if (!milliseconds) {

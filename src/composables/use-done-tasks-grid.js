@@ -9,8 +9,7 @@ export function useDoneTaskGrid() {
     try {
       doneTasksLoading.value = true;
       const response = await api.get("tasks/done-tasks");
-      const data = await response.data;
-      doneTasks.value = data;
+      doneTasks.value = response.data;
     } catch (error) {
       $q.notify({
         message: "Houve um erro ao carregar as tarefas",

@@ -11,13 +11,10 @@
 <script setup>
 import TaskCard from "./TaskCard.vue";
 import { useTaskGrid } from "../../composables/use-task-grid";
-import { onMounted, onUpdated } from "vue";
 
 const { tasks, fetchTasks } = useTaskGrid();
 
-onMounted(async () => {
-  await fetchTasks();
-});
+fetchTasks();
 </script>
 
 <style scoped>
