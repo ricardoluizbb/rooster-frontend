@@ -4,14 +4,14 @@
       <q-card-section class="half-width q-pa-none">
         <q-img class="full-height" src="../../assets/clock.jpg"></q-img>
       </q-card-section>
-      <q-card-section class="half-width self-center">
+      <q-card-section class="half-width self-center q-py-none">
         <q-card-section class="text-center">
           <q-img
             src="../../assets/rooster1.svg"
             style="height: 67px; max-width: 282px"
           ></q-img>
         </q-card-section>
-        <q-card-section>
+        <q-card-section class="q-py-sm">
           <q-input
             rounded
             dense
@@ -64,10 +64,56 @@
               />
             </template>
           </q-input>
+        </q-card-section>
+        <q-card-section class="row q-col-gutter-xs q-pt-none">
+          <div class="col-6">
+            <FormRequirements
+              class="text-caption"
+              :requirement="'Letra maiúscula'"
+              :checked="hasUpperCase"
+            />
+          </div>
+          <div class="col-6">
+            <FormRequirements
+              class="text-caption"
+              :requirement="'Letra minúscula'"
+              :checked="haslowerCase"
+            />
+          </div>
+          <div class="col-6">
+            <FormRequirements
+              class="text-caption"
+              :requirement="'Possui número'"
+              :checked="hasNumber"
+            />
+          </div>
+          <div class="col-6">
+            <FormRequirements
+              class="text-caption"
+              :requirement="'Possui símbolo'"
+              :checked="hasSymbol"
+            />
+          </div>
+          <div class="col-6">
+            <FormRequirements
+              class="text-caption"
+              :requirement="'Senhas coincidem'"
+              :checked="passwordMatch"
+            />
+          </div>
+          <div class="col-6">
+            <FormRequirements
+              class="text-caption"
+              :requirement="'Mais de 6 caracteres'"
+              :checked="hasMoreThanFive"
+            />
+          </div>
+        </q-card-section>
+        <q-card-section class="text-center">
           <q-btn
             rounded
             dense
-            :disabled="!(email && name && password && confirmPassword)"
+            :disabled="!isValidForm"
             :loading="sendButtonLoading"
             class="full-width"
             color="primary"
@@ -76,13 +122,13 @@
             @keypress.enter="sendForm"
           />
         </q-card-section>
-        <q-card-section class="text-center">
+        <q-card-section class="text-center q-pa-none">
           <q-btn
             @click="router.push('/login')"
             dense
             flat
             color="primary"
-            no-caps=""
+            no-caps
             >Já possui uma conta?</q-btn
           >
         </q-card-section>
@@ -94,6 +140,8 @@
 <script setup>
 import { useLogin } from "../../composables/use-login";
 import router from "../../router/index";
+import FormRequirements from "./FormRequirements.vue";
+import { computed } from "vue";
 
 const {
   createAccountForm,
@@ -106,6 +154,47 @@ const {
   confirmPassword,
 } = useLogin();
 
+const hasUpperCase = computed(() => {
+  return /[A-Z]/.test(password.value);
+});
+
+const haslowerCase = computed(() => {
+  return /[a-z]/.test(password.value);
+});
+
+const hasNumber = computed(() => {
+  return /\d/.test(password.value);
+});
+
+const hasSymbol = computed(() => {
+  return /[!@#$%^&*(),.?":{}|<>]/.test(password.value);
+});
+
+const hasMoreThanFive = computed(() => {
+  return password.value.length > 5;
+});
+
+const passwordMatch = computed(() => {
+  return (
+    confirmPassword.value === password.value &&
+    confirmPassword.value !== "" &&
+    password.value !== ""
+  );
+});
+
+const isValidForm = computed(() => {
+  return (
+    hasUpperCase.value &&
+    haslowerCase.value &&
+    hasNumber.value &&
+    hasSymbol.value &&
+    hasMoreThanFive.value &&
+    passwordMatch.value &&
+    name.value.length &&
+    email.value.length
+  );
+});
+
 const sendForm = async () => {
   await createAccountForm(name, email, password, confirmPassword);
 };
@@ -114,7 +203,7 @@ const sendForm = async () => {
 <style scoped>
 .form-card {
   width: 720px;
-  height: 530px;
+  height: 600px;
 }
 
 .half-width {
