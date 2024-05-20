@@ -29,6 +29,7 @@
             v-model="password"
             label="Senha"
             outlined
+            @keyup.enter="sendForm"
           >
             <template v-slot:append>
               <q-icon

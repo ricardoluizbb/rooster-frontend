@@ -55,6 +55,7 @@
             v-model="confirmPassword"
             label="Confirme sua senha"
             outlined
+            @keypress.enter="sendForm"
           >
             <template v-slot:append>
               <q-icon
@@ -119,7 +120,6 @@
             color="primary"
             label="Criar conta"
             @click="sendForm"
-            @keypress.enter="sendForm"
           />
         </q-card-section>
         <q-card-section class="text-center q-pa-none">

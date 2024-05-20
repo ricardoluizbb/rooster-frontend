@@ -28,7 +28,7 @@ export function useLogin() {
         password: password.value,
         setCookie: true,
       });
-      router.push("/");
+      await router.push("/");
       $q.notify({
         message: "Bem-vindo(a) ao Rooster!",
         color: "primary",
@@ -57,13 +57,13 @@ export function useLogin() {
         confirmPassword: confirmPassword.value,
         setCookie: true,
       });
+      await router.push("/login");
       $q.notify({
         message: "Conta criada com sucesso!",
         color: "positive",
         actions: [{ label: "Fechar", color: "white" }],
         icon: "check",
       });
-      router.push("/login");
       email.value = "";
     } catch (error) {
       $q.notify({
