@@ -13,14 +13,23 @@
           </q-tabs>
         </div>
         <div>
-          <q-btn
-            @click="generateReport"
-            class="q-mr-lg"
-            dense
-            flat
-            icon="file_download"
-          >
-          </q-btn>
+          <q-btn-dropdown color="primary" icon="account_circle">
+            <q-list>
+              <q-item clickable v-close-popup @click="generateReport">
+                <q-item-section avatar>
+                  <q-icon color="primary" name="file_download" />
+                </q-item-section>
+                <q-item-section>Gerar relatório</q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="logout">
+                <q-item-section avatar>
+                  <q-icon color="primary" name="logout" />
+                </q-item-section>
+                <q-item-section>Sair</q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
         </div>
       </q-toolbar>
     </q-header>
@@ -41,7 +50,7 @@ import { api } from "../boot/axios";
 import { ref } from "vue";
 const selectedTab = ref("MyTasks");
 
-const { whoAmI, whoAmILoading } = useLogin();
+const { whoAmI, logout, whoAmILoading } = useLogin();
 
 whoAmI();
 

@@ -77,10 +77,25 @@ export function useLogin() {
     }
   };
 
+  const logout = async () => {
+    try {
+      await api.post("logout");
+      await router.push("/login");
+    } catch (error) {
+      $q.notify({
+        message: "Erro ao tentar sair.",
+        color: "negative",
+        actions: [{ label: "Fechar", color: "white" }],
+        icon: "error",
+      });
+    }
+  };
+
   return {
     sendLoginForm,
     createAccountForm,
     whoAmI,
+    logout,
     sendButtonLoading,
     email,
     name,
