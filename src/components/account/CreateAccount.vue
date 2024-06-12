@@ -47,24 +47,6 @@
               />
             </template>
           </q-input>
-          <q-input
-            rounded
-            dense
-            :type="isPwdConfirmation ? 'password' : 'text'"
-            class="q-mb-md"
-            v-model="confirmPassword"
-            label="Confirme sua senha"
-            outlined
-            @keypress.enter="sendForm"
-          >
-            <template v-slot:append>
-              <q-icon
-                :name="isPwdConfirmation ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer"
-                @click="isPwdConfirmation = !isPwdConfirmation"
-              />
-            </template>
-          </q-input>
         </q-card-section>
         <q-card-section class="row q-col-gutter-xs q-pt-none">
           <div class="col-6">
@@ -93,13 +75,6 @@
               class="text-caption"
               :requirement="'Possui símbolo'"
               :checked="hasSymbol"
-            />
-          </div>
-          <div class="col-6">
-            <FormRequirements
-              class="text-caption"
-              :requirement="'Senhas coincidem'"
-              :checked="passwordMatch"
             />
           </div>
           <div class="col-6">
@@ -149,7 +124,6 @@ const {
   email,
   name,
   isPwd,
-  isPwdConfirmation,
   password,
   confirmPassword,
 } = useLogin();
@@ -174,14 +148,6 @@ const hasMoreThanFive = computed(() => {
   return password.value.length > 5;
 });
 
-const passwordMatch = computed(() => {
-  return (
-    confirmPassword.value === password.value &&
-    confirmPassword.value !== "" &&
-    password.value !== ""
-  );
-});
-
 const isValidForm = computed(() => {
   return (
     hasUpperCase.value &&
@@ -189,7 +155,6 @@ const isValidForm = computed(() => {
     hasNumber.value &&
     hasSymbol.value &&
     hasMoreThanFive.value &&
-    passwordMatch.value &&
     name.value.length &&
     email.value.length
   );

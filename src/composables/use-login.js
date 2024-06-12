@@ -9,16 +9,8 @@ export function useLogin() {
   const email = ref("");
   const name = ref("");
   const isPwd = ref(true);
-  const isPwdConfirmation = ref(true);
   const password = ref("");
   const confirmPassword = ref("");
-  const whoAmILoading = ref(false);
-
-  const whoAmI = async () => {
-    whoAmILoading.value = true;
-    await api.get("whoami");
-    whoAmILoading.value = false;
-  };
 
   const sendLoginForm = async (email, password) => {
     try {
@@ -26,7 +18,6 @@ export function useLogin() {
       await api.post("login", {
         email: email.value,
         password: password.value,
-        setCookie: true,
       });
       await router.push("/");
       $q.notify({
@@ -47,15 +38,13 @@ export function useLogin() {
     }
   };
 
-  const createAccountForm = async (name, email, password, confirmPassword) => {
+  const createAccountForm = async (name, email, password) => {
     try {
       sendButtonLoading.value = true;
-      await api.post("registration", {
+      await api.post("register", {
         name: name.value,
         email: email.value,
         password: password.value,
-        confirmPassword: confirmPassword.value,
-        setCookie: true,
       });
       await router.push("/login");
       $q.notify({
@@ -94,15 +83,12 @@ export function useLogin() {
   return {
     sendLoginForm,
     createAccountForm,
-    whoAmI,
     logout,
     sendButtonLoading,
     email,
     name,
     isPwd,
-    isPwdConfirmation,
     password,
     confirmPassword,
-    whoAmILoading,
   };
 }

@@ -38,21 +38,21 @@
       <router-view :selectedTab="selectedTab" />
     </q-page-container>
   </q-layout>
-  <q-layout v-else>
+  <!-- <q-layout v-else>
     <SplashScreenView :splashLoading="whoAmILoading" />
-  </q-layout>
+  </q-layout> -->
 </template>
 
 <script setup>
 import { useLogin } from "../composables/use-login";
-import SplashScreenView from "../pages/SplashScreenView.vue";
+// import SplashScreenView from "../pages/SplashScreenView.vue";
 import { api } from "../boot/axios";
 import { ref } from "vue";
 const selectedTab = ref("MyTasks");
 
 const { whoAmI, logout, whoAmILoading } = useLogin();
 
-whoAmI();
+// whoAmI();
 
 const generateReport = async () => {
   try {
